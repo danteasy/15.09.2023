@@ -76,11 +76,14 @@ function scroll(elem) {
 
     function drag(event) {
         if (!dragging) return;
-        unclickable = true;
-        scrollWrapper.style.scrollBehavior = "auto";
         let currentX = event.clientX || event.touches[0].clientX;
         let deltaX = lastX - currentX;
+        if (deltaX == 0) return;
+        unclickable = true;
+        scrollWrapper.style.scrollBehavior = "auto";
+
         lastX = currentX;
+
         scrollWrapper.scrollLeft += deltaX;
     }
 }
@@ -248,7 +251,6 @@ function scroll(elem) {
             ".reviews__cards .slider__buttons"
         );
         buttons.addEventListener("click", (e) => {
-            console.log(paginationIndex);
             if (!clickAllowed) return;
             clickAllowed = false;
             if (paginationIndex > 0 && e.target == buttons.children[0]) {

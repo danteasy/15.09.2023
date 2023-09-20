@@ -1311,7 +1311,7 @@ h2 {
   .houses {
     padding-left: 0;
   }
-  .orange-title {
+  .orange-title.var1 {
     margin-left: 2.5em;
   }
   .reviews .card .reviewer .review__person {
