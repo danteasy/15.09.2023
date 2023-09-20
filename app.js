@@ -47,6 +47,7 @@ function scroll(elem) {
     scrollWrapper.addEventListener("mousemove", drag);
     scrollWrapper.addEventListener("touchmove", (e) => {
         drag(e.touches[0]);
+        e.preventDefault();
     });
 
     let trueWrapper =
@@ -78,12 +79,10 @@ function scroll(elem) {
         if (!dragging) return;
         let currentX = event.clientX || event.touches[0].clientX;
         let deltaX = lastX - currentX;
-        if (deltaX == 0) return;
+        // if (deltaX == 0) return;
         unclickable = true;
         scrollWrapper.style.scrollBehavior = "auto";
-
         lastX = currentX;
-
         scrollWrapper.scrollLeft += deltaX;
     }
 }
