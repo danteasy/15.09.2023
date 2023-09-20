@@ -1,0 +1,8 @@
+@media screen and (max-width: 1248px) {
+    html {
+        overflow-x: initial;
+    }
+    .reviews .card__review {
+        width: 100%;
+    }
+}
