@@ -44,6 +44,7 @@ function scroll(elem) {
         dragging = true;
         lastY = e.touches[0].clientY;
         lastX = e.touches[0].clientX;
+        // body.addEventListener("scroll", preventScroll, { passive: false });
     });
 
     scrollWrapper.addEventListener("mousemove", drag);
@@ -71,11 +72,15 @@ function scroll(elem) {
     });
     scrollWrapper.addEventListener("touchend", (e) => {
         dragging = false;
-        document.body.overflowY = "visible";
+        scrollWrapper.style.touchAction = "auto";
     });
     scrollWrapper.addEventListener("mouseleave", (e) => {
         dragging = false;
     });
+    // function preventScroll(event) {
+    //     console.log("preventing");
+    //     event.preventDefault();
+    // }
 
     function drag(event) {
         if (!dragging) return;
@@ -84,16 +89,11 @@ function scroll(elem) {
         let currentY = event.clientY || event.touches[0].clientY;
         let deltaX = lastX - currentX;
         let deltaY = lastY - currentY;
-        if (!(deltaY > 200 || deltaY < -200)) {
-            document.body.overflowY = "hidden";
-            console.log("hidden");
+        if (deltaY > 200 || deltaY < -200) {
+            scrollWrapper.style.touchAction = "auto";
         } else {
-            document.body.overflowY = "visible";
-            console.log("visible");
+            scrollWrapper.style.touchAction = "none";
         }
-        // if (deltaX == 0 || deltaX == 1) {
-        //     // document.body.style.overflowY = "hidden";
-        // }
         scrollWrapper.style.scrollBehavior = "auto";
         lastX = currentX;
         scrollWrapper.scrollLeft += deltaX;
@@ -146,7 +146,6 @@ function scroll(elem) {
             "active",
             scrollPos !== 0 || scrollPos > 100
         );
-
         if (scrollPos >= scrollCalc - 50) {
             addHousesToDom();
         }
