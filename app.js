@@ -34,6 +34,7 @@ function scroll(elem) {
     let lastX = 0;
     let lastY = 0;
     let unclickable = false;
+    scrollWrapper.style.touchAction = "pan-y";
 
     scrollWrapper.addEventListener("mousedown", (e) => {
         dragging = true;
@@ -44,7 +45,6 @@ function scroll(elem) {
         dragging = true;
         lastY = e.touches[0].clientY;
         lastX = e.touches[0].clientX;
-        // body.addEventListener("scroll", preventScroll, { passive: false });
     });
 
     scrollWrapper.addEventListener("mousemove", drag);
@@ -72,7 +72,7 @@ function scroll(elem) {
     });
     scrollWrapper.addEventListener("touchend", (e) => {
         dragging = false;
-        scrollWrapper.style.touchAction = "auto";
+        // document.body.classList.remove("lock-screen");
     });
     scrollWrapper.addEventListener("mouseleave", (e) => {
         dragging = false;
@@ -89,11 +89,12 @@ function scroll(elem) {
         let currentY = event.clientY || event.touches[0].clientY;
         let deltaX = lastX - currentX;
         let deltaY = lastY - currentY;
-        if (deltaY > 200 || deltaY < -200) {
-            scrollWrapper.style.touchAction = "auto";
-        } else {
-            scrollWrapper.style.touchAction = "none";
-        }
+        // if (deltaY < 100) {
+        //     scrollWrapper.addEventListener("touchmove", (e) => {
+        //         e.preventDefault();
+        //     });
+        // }
+        console.log(deltaY);
         scrollWrapper.style.scrollBehavior = "auto";
         lastX = currentX;
         scrollWrapper.scrollLeft += deltaX;
