@@ -32,6 +32,7 @@ let dragging = false;
 function scroll(elem) {
     let scrollWrapper = elem;
     let lastX = 0;
+    let lastY = 0;
     let unclickable = false;
 
     scrollWrapper.addEventListener("mousedown", (e) => {
@@ -41,6 +42,7 @@ function scroll(elem) {
 
     scrollWrapper.addEventListener("touchstart", (e) => {
         dragging = true;
+        lastY = e.touches[0].clientY;
         lastX = e.touches[0].clientX;
     });
 
@@ -69,6 +71,7 @@ function scroll(elem) {
     });
     scrollWrapper.addEventListener("touchend", (e) => {
         dragging = false;
+        document.body.overflowY = "visible";
     });
     scrollWrapper.addEventListener("mouseleave", (e) => {
         dragging = false;
@@ -78,8 +81,19 @@ function scroll(elem) {
         if (!dragging) return;
         unclickable = true;
         let currentX = event.clientX || event.touches[0].clientX;
+        let currentY = event.clientY || event.touches[0].clientY;
         let deltaX = lastX - currentX;
-        if (deltaX == 0 || deltaX == 1) return;
+        let deltaY = lastY - currentY;
+        if (!(deltaY > 100 || deltaY < -100)) {
+            document.body.overflowY = "hidden";
+            console.log("hidden");
+        } else {
+            document.body.overflowY = "visible";
+            console.log("visible");
+        }
+        // if (deltaX == 0 || deltaX == 1) {
+        //     // document.body.style.overflowY = "hidden";
+        // }
         scrollWrapper.style.scrollBehavior = "auto";
         lastX = currentX;
         scrollWrapper.scrollLeft += deltaX;
