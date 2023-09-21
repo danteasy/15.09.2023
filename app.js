@@ -84,7 +84,7 @@ function scroll(elem) {
         let currentY = event.clientY || event.touches[0].clientY;
         let deltaX = lastX - currentX;
         let deltaY = lastY - currentY;
-        if (!(deltaY > 100 || deltaY < -100)) {
+        if (!(deltaY > 200 || deltaY < -200)) {
             document.body.overflowY = "hidden";
             console.log("hidden");
         } else {
