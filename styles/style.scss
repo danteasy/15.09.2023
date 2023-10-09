@@ -51,6 +51,9 @@ body {
     &.smooth--load {
         opacity: 100;
     }
+    &.lock-screen {
+        overflow-y: hidden;
+    }
 }
 
 button {
@@ -1142,6 +1145,7 @@ h2 {
     margin-top: 7.5em;
     padding-bottom: 7.5em;
     position: relative;
+    overflow: hidden;
     &::after {
         content: url(../img/footer__gradients.svg);
         position: absolute;
