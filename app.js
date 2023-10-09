@@ -1,9 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
-    (function svgPathCurrentColorAttr() {
+(function svgPathCurrentColorAttr() {
+    document.addEventListener("DOMContentLoaded", function () {
         let svgs = document.querySelectorAll("path");
         svgs.forEach((svg) => svg.setAttribute("fill", "currentColor"));
-    })();
-});
+    });
+})();
 
 (function smoothPageLoad() {
     window.addEventListener("load", () => {
@@ -72,15 +72,10 @@ function scroll(elem) {
     });
     scrollWrapper.addEventListener("touchend", (e) => {
         dragging = false;
-        // document.body.classList.remove("lock-screen");
     });
     scrollWrapper.addEventListener("mouseleave", (e) => {
         dragging = false;
     });
-    // function preventScroll(event) {
-    //     console.log("preventing");
-    //     event.preventDefault();
-    // }
 
     function drag(event) {
         if (!dragging) return;
@@ -89,12 +84,6 @@ function scroll(elem) {
         let currentY = event.clientY || event.touches[0].clientY;
         let deltaX = lastX - currentX;
         let deltaY = lastY - currentY;
-        // if (deltaY < 100) {
-        //     scrollWrapper.addEventListener("touchmove", (e) => {
-        //         e.preventDefault();
-        //     });
-        // }
-        console.log(deltaY);
         scrollWrapper.style.scrollBehavior = "auto";
         lastX = currentX;
         scrollWrapper.scrollLeft += deltaX;
@@ -123,7 +112,6 @@ function scroll(elem) {
             cardWrapper.scrollLeft >= calculateScrollSize() ||
             cardWrapper.scrollLeft > calculateScrollSize() - 50
         ) {
-            console.log("yes");
             addHousesToDom();
         }
     }
@@ -183,48 +171,47 @@ function scroll(elem) {
             let image = new Image();
             (async function checkImage() {
                 image.src = await checkImageUrl(data[i].imgSrc);
-                dom();
-            })();
-
-            function dom() {
-                let card = ` <div class="card">
-            <a href="#">
-                <div class="card__img">
-                    <img src="${image.src}" alt="house" />
-                    ${label}
-                </div>
-                <div class="card__info">
-                    <div class="card__title">
-                        Roselands House
-                    </div>
-                    <div class="card__price">
-                    ${price}
-                    </div>
-                </div>
-                <div class="card__seller">
-                    <div class="seller__picture">
-                        <img
-                            src="img/seller.jfif"
-                            alt="seller"
-                        />
-                    </div>
-                    <div class="seller__info">
-                        <div class="seller__name">
-                            Dianne Russell
-                        </div>
-                        <div class="seller__location">
-                        ${location}
-                        </div>
-                    </div>
-                </div>
-            </a>
-            </div>`;
-                cardWrapper.insertAdjacentHTML("beforeend", card);
+                pushCard(image, label, price, location);
                 console.log(i);
-            }
+            })();
         }
-        async function checkImageUrl(url) {
-            return new Promise((resolve, reject) => {
+        function pushCard(image, label, price, location) {
+            let card = ` <div class="card">
+        <a href="#">
+            <div class="card__img">
+                <img src="${image.src}" alt="house" />
+                ${label}
+            </div>
+            <div class="card__info">
+                <div class="card__title">
+                    Roselands House
+                </div>
+                <div class="card__price">
+                ${price}
+                </div>
+            </div>
+            <div class="card__seller">
+                <div class="seller__picture">
+                    <img
+                        src="img/seller.jfif"
+                        alt="seller"
+                    />
+                </div>
+                <div class="seller__info">
+                    <div class="seller__name">
+                        Dianne Russell
+                    </div>
+                    <div class="seller__location">
+                    ${location}
+                    </div>
+                </div>
+            </div>
+        </a>
+        </div>`;
+            cardWrapper.insertAdjacentHTML("beforeend", card);
+        }
+        function checkImageUrl(url) {
+            return new Promise((resolve) => {
                 let img = new Image();
                 img.src = url;
                 img.onload = () => resolve(img.src);
@@ -297,6 +284,7 @@ function scroll(elem) {
     })();
     let paginationDots = Array.from(pagination.childNodes);
     let paginationIndex = 1;
+
     function centerActiveCard() {
         let activeCard = cards[paginationIndex];
         let activeCardLeft = activeCard.offsetLeft;
