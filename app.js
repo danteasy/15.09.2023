@@ -108,6 +108,7 @@ function scroll(elem) {
         if (!dragging) return;
         scrollPos = cardWrapper.scrollLeft;
         paintButtons();
+
         if (
             cardWrapper.scrollLeft >= calculateScrollSize() ||
             cardWrapper.scrollLeft > calculateScrollSize() - 50
@@ -121,6 +122,7 @@ function scroll(elem) {
         cardWrapper.scrollLeft += cardWrapper.firstElementChild.offsetWidth * 3;
         scrollPos = cardWrapper.scrollLeft;
         paintButtons();
+        previousBtn.classList.add("active");
     });
     previousBtn.addEventListener("click", function () {
         changeScrollBehaviour();
@@ -131,21 +133,20 @@ function scroll(elem) {
 
     function paintButtons() {
         let scrollCalc = calculateScrollSize();
-        previousBtn.classList.toggle(
-            "active",
-            scrollPos !== 0 || scrollPos > 100
-        );
+        previousBtn.classList.toggle("active", scrollPos > 100);
+        nextBtn.classList.toggle("active", scrollPos < scrollCalc);
         if (scrollPos >= scrollCalc - 50) {
             addHousesToDom();
         }
+    }
+    function calculateScrollSize() {
+        return cardWrapper.scrollWidth - cardWrapper.clientWidth;
     }
 
     function changeScrollBehaviour() {
         cardWrapper.style.scrollBehavior = "smooth";
     }
-    function calculateScrollSize() {
-        return cardWrapper.scrollWidth - cardWrapper.clientWidth;
-    }
+
     scroll(cardWrapper);
 })();
 
@@ -162,7 +163,9 @@ function scroll(elem) {
     btn.addEventListener("click", addHousesToDom);
 
     function addHousesToDom() {
+        console.log("houses:" + data.length);
         for (let i = startFrom; i < startFrom + cardsPerLoad; i++) {
+            if (i >= data.length) break;
             let location = data[i].country + data[i].streetAddress;
             let price =
                 "$ " +
@@ -245,6 +248,7 @@ function scroll(elem) {
     let cardWidth =
         wrapper.offsetWidth / cards.length +
         parseInt(window.getComputedStyle(wrapper).getPropertyValue("gap"));
+
     (function sliderButtons() {
         let buttons = document.querySelector(
             ".reviews__cards .slider__buttons"
@@ -252,6 +256,7 @@ function scroll(elem) {
         buttons.addEventListener("click", (e) => {
             if (!clickAllowed) return;
             clickAllowed = false;
+
             if (paginationIndex > 0 && e.target == buttons.children[0]) {
                 paginationIndex -= 1;
                 changeDot(paginationIndex);
@@ -266,6 +271,7 @@ function scroll(elem) {
                 wrapper.scrollLeft += cardWidth;
                 centerActiveCard();
             }
+
             setTimeout(() => {
                 clickAllowed = true;
             }, 500);
